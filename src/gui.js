@@ -9194,9 +9194,8 @@ IDE_Morph.prototype.saveProjectToCloud = function (name) {
 };
 
 /*
-    After a cloud save, set #cloudproject: so a refresh reopens this project
-    while you are logged in (new private saves, renames, etc.). Shared projects
-    opened by others still use #present: from the link they were given.
+    After a cloud save, set #present: in the url so a refresh reopens this project
+    and Open in Community Site works.
 */
 IDE_Morph.prototype.updateBrowserUrlAfterCloudSave = function () {
     if (this.source !== 'cloud' || !this.cloud.username) {return; }
