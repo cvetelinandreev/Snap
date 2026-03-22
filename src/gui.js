@@ -9184,10 +9184,29 @@ IDE_Morph.prototype.saveProjectToCloud = function (name) {
         projectBody,
         (message) => {
             this.recordSavedChanges();
+            if (!name) {
+                this.updateBrowserUrlAfterCloudSave();
+            }
             this.showMessage(message, 2);
         },
         this.cloudError()
     );
+};
+
+/*
+    After a cloud save, set #cloudproject: so a refresh reopens this project
+    while you are logged in (new private saves, renames, etc.). Shared projects
+    opened by others still use #present: from the link they were given.
+*/
+IDE_Morph.prototype.updateBrowserUrlAfterCloudSave = function () {
+    if (this.source !== 'cloud' || !this.cloud.username) {return; }
+
+    if (!this.getProjectName()) {return; }
+    location.hash = '#present:Username=' +
+        encodeURIComponent(this.cloud.username) +
+        '&ProjectName=' +
+        encodeURIComponent(this.getProjectName()) + 
+        "&editMode&noRun";
 };
 
 IDE_Morph.prototype.exportProjectMedia = function (name) {
